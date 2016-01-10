@@ -7,7 +7,7 @@
         %dd
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
-            = f.text_field :cost_price, :class => 'text'
+            = f.text_field :amount, :class => 'text'
       %dl.half
         %dt= f.label :currency, t('shoppe.subscription_plans.currency')
         %dd= f.text_field :currency, :class => 'text'
@@ -33,7 +33,7 @@
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
   %p.submit
-    - unless @delivery_service.new_record?
+    - unless @subscription_plan.new_record?
       %span.right= link_to  t('shoppe.delete'), [@subscription_plan], :class => 'button purple', :method => :delete, :data => {:confirm => t('shoppe.subscription_plans.delete_confirmation')}
     = f.submit t('shoppe.submit'), :class => 'button green'
     = link_to t('shoppe.cancel'), :subscription_plans, :class => 'button'

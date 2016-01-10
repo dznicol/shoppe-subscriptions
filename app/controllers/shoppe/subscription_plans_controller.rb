@@ -1,5 +1,3 @@
-require_dependency "shoppe/application_controller"
-
 module Shoppe
   class SubscriptionPlansController < ApplicationController
     before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
