@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @subscription_plan.amount %>
+</p>
+
+<p>
+  <strong>Interval:</strong>
+  <%= @subscription_plan.interval %>
+</p>
+
+<p>
+  <strong>Interval count:</strong>
+  <%= @subscription_plan.interval_count %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @subscription_plan.name %>
+</p>
+
+<p>
+  <strong>Currency:</strong>
+  <%= @subscription_plan.currency %>
+</p>
+
+<p>
+  <strong>Trial period:</strong>
+  <%= @subscription_plan.trial_period %>
+</p>
+
+<%= link_to 'Edit', edit_subscription_plan_path(@subscription_plan) %> |
+<%= link_to 'Back', subscription_plans_path %>

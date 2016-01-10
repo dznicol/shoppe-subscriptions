@@ -1,30 +1,28 @@
-# coding: utf-8
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'shoppe/subscriptions/version'
+$:.push File.expand_path("../lib", __FILE__)
 
-Gem::Specification.new do |spec|
-  spec.name          = "shoppe-subscriptions"
-  spec.version       = Shoppe::Subscriptions::VERSION
-  spec.authors       = ["David Nicol"]
-  spec.email         = ["david@sidstan.com"]
+# Maintain your gem's version:
+require "shoppe/subscriptions/version"
 
-  spec.summary       = %q{Add (Stripe) subscriptions to shoppe, for now using Stripe webhooks.}
-  spec.description   = %q{Add (Stripe) subscriptions to shoppe, for now using Stripe webhooks.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
+# Describe your gem and declare its dependencies:
+Gem::Specification.new do |s|
+  s.name        = "shoppe-subscriptions"
+  s.version     = Shoppe::Subscriptions::VERSION
+  s.authors     = ["David Nicol"]
+  s.email       = ["dznicol@gmail.com"]
+  s.homepage    = "TODO: Add home page for shoppe-subscriptions"
+  s.summary     = %q{Add (Stripe) subscriptions to shoppe, for now using Stripe webhooks.}
+  s.description = %q{Add (Stripe) subscriptions to shoppe, for now using Stripe webhooks.}
+  s.license     = "MIT"
 
-  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.test_files = Dir["test/**/*"]
 
-  spec.add_dependency "shoppe"
-  spec.add_dependency "shoppe-stripe"
+  s.add_dependency "rails", "~> 4.2.5"
+  s.add_dependency "shoppe"
+  s.add_dependency "shoppe-stripe"
+  s.add_dependency "stripe_event"
 
-  spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
-
-  spec.add_runtime_dependency 'stripe_event'
+  s.add_development_dependency "bundler", "~> 1.10"
+  s.add_development_dependency "rake", "~> 10.0"
+  s.add_development_dependency "rspec"
 end

@@ -1,0 +1,1 @@
+require "shoppe/subscriptions/engine"

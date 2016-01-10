@@ -1,0 +1,21 @@
+en:
+  shoppe:
+    navigation:
+      admin_primary:
+        subscriptions: Subscriptions
+        subscription_plans: Subscription Plans
+    subscription_plans:
+      subscription_plans: Subscription Plans
+      new: New Subscription Plan
+      amount: Amount
+      interval: Interval
+      interval_count: Interval Count
+      name: Name
+      currency: Currency
+      id: ID
+      trial_period_days: Trial Period (days)
+      no_subscription_plans: No subscription plans to display.
+      back: Back to subscription plans
+    subscriptions:
+      subscriptions: Subscriptions
+      new: New Subscription
