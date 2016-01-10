@@ -10,7 +10,7 @@ module Shoppe
     end
 
     def new
-
+      @subscription_plan = Shoppe::SubscriptionPlan.new
     end
   end
 end
