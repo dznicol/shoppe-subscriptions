@@ -10,16 +10,20 @@
             = f.text_field :amount, :class => 'text'
       %dl.half
         %dt= f.label :currency, t('shoppe.subscription_plans.currency')
-        %dd= f.text_field :currency, :class => 'text'
+        %dd= f.text_field :currency, :class => 'text', placeholder: Shoppe.settings.currency_unit.html_safe
 
   = field_set_tag t('shoppe.subscription_plans.interval') do
     .splitContainer
       %dl.half
-        %dt= f.label :currency, t('shoppe.subscription_plans.interval')
-        %dd= f.text_field :currency, :class => 'text'
+        %dt= f.label :interval, t('shoppe.subscription_plans.interval')
+        %dd
+          = f.text_field :interval, :class => 'text', placeholder: t('shoppe.subscription_plans.months').downcase
+          %p.help=  t('shoppe.subscription_plans.interval_help')
       %dl.half
         %dt= f.label :currency, t('shoppe.subscription_plans.interval_count')
-        %dd= f.text_field :currency, :class => 'text'
+        %dd
+          = f.text_field :currency, :class => 'text'
+          %p.help=  t('shoppe.subscription_plans.interval_count_help')
 
   = field_set_tag  t('shoppe.subscription_plans.summary') do
     .splitContainer

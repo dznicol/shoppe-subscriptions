@@ -2,7 +2,7 @@
 
 = content_for :header do
   %p.buttons= link_to t('shoppe.subscription_plans.new'), :new_subscription_plan, :class => 'button green'
-  %h2.delivery_services= t('shoppe.subscription_plans.subscription_plans')
+  %h2.subscription_plans= t('shoppe.subscription_plans.subscription_plans')
 
 .table
   %table.data
@@ -22,10 +22,10 @@
       - else
         - for subscription_plan in @subscription_plans
           %tr
-            %td= link_to subscription_plan.amount, [:edit, delivery_service]
+            %td= link_to subscription_plan.amount, [:edit, subscription_plan]
             %td= subscription_plan.interval
             %td= subscription_plan.interval_count
-            %td= subscription_plan.link_to subscription_plan.name
+            %td= link_to subscription_plan.name, [:edit, subscription_plan]
             %td= subscription_plan.currency
             %td= subscription_plan.id
-            %td= subscription_plan.trial_period_days
+            %td= subscription_plan.trial_period

@@ -16,6 +16,12 @@ en:
       trial_period_days: Trial Period (days)
       no_subscription_plans: No subscription plans to display.
       back: Back to subscription plans
+      blank_currency: Leave blank for default currency
+      months: Months
+      interval_help: Number of months between subscription charges
+      interval_count_help: Number of months between subscription charges
+      delete_confirmation: Are you sure you wish to remove this subscription plan?
+      stripe_subscription_plan_id: Stripe Subscription Plan ID will be set on first save
     subscriptions:
       subscriptions: Subscriptions
       new: New Subscription
