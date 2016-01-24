@@ -22,7 +22,7 @@
       - else
         - for subscription_plan in @subscription_plans
           %tr
-            %td= link_to subscription_plan.amount, [:edit, subscription_plan]
+            %td= link_to "#{Shoppe.settings.currency_unit.html_safe}#{subscription_plan.amount}", [:edit, subscription_plan]
             %td= subscription_plan.interval
             %td= subscription_plan.interval_count
             %td= link_to subscription_plan.name, [:edit, subscription_plan]
