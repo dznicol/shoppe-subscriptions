@@ -10,18 +10,36 @@ en:
       amount: Amount
       interval: Interval
       interval_count: Interval Count
+      trial_period: Trial Period
+      trial_period_days: Trial Period (days)
+      trial_period_help: The number of days offered as a free trial period
+      days: Days
       name: Name
       currency: Currency
-      id: ID
-      trial_period_days: Trial Period (days)
+      default_currency: gbp
+      currency_help: Currencies currently supported by your payment provider
+      api_plan_id: API Plan ID
       no_subscription_plans: No subscription plans to display.
       back: Back to subscription plans
       blank_currency: Leave blank for default currency
       months: Months
-      interval_help: Number of months between subscription charges
+      interval_help: Time period between subscription charges
       interval_count_help: Number of months between subscription charges
       delete_confirmation: Are you sure you wish to remove this subscription plan?
-      stripe_subscription_plan_id: Stripe Subscription Plan ID will be set on first save
+      stripe_subscription_plan_id: This will be the ID shown on the Stripe dashboard
+      product: Product
+      select_product: Select Product
+      api_responses:
+        general: Payment provider API failed
+        currency_retrieval: Failed to retrieve charging currencies from payment provider
+        plan_created: Subscription plan was successfully created.
+        plan_updated: Subscription plan was successfully updated.
+        plan_destroyed: Subscription plan was successfully destroyed.
     subscriptions:
       subscriptions: Subscriptions
       new: New Subscription
+    intervals:
+      day: Day
+      month: Month
+      week: Week
+      year: Year

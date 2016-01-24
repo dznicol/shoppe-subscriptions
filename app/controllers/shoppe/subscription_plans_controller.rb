@@ -17,18 +17,36 @@ module Shoppe
     # GET /subscription_plans/new
     def new
       @subscription_plan = Shoppe::SubscriptionPlan.new
+      @subscribable_products = Shoppe::Product.where(subscribable: true)
+      begin
+        @charging_currencies = Shoppe::ApiHandler.get_currencies
+      rescue ::Stripe::InvalidRequestError
+        flash[:warning] = t('shoppe.subscription_plans.failures.currency_retrieval')
+        @charging_currencies = []
+      end
     end
 
     # GET /subscription_plans/1/edit
     def edit
+      @subscribable_products = Shoppe::Product.where(subscribable: true)
+      begin
+        @charging_currencies = Shoppe::ApiHandler.get_currencies
+      rescue ::Stripe::InvalidRequestError
+        flash[:warning] = t('shoppe.subscription_plans.api_responses.currency_retrieval')
+        @charging_currencies = []
+      end
     end
 
     # POST /subscription_plans
     def create
-      @subscription_plan = Shoppe::SubscriptionPlan.new(subscription_plan_params)
+      begin
+        @subscription_plan = Shoppe::SubscriptionPlan.new(subscription_plan_params)
+      rescue ::Stripe::InvalidRequestError => e
+        flash[:warning] = e.message
+      end
 
       if @subscription_plan.save
-        redirect_to @subscription_plan, notice: 'Subscription plan was successfully created.'
+        redirect_to @subscription_plan, notice: t('shoppe.subscription_plans.api_responses.plan_created')
       else
         render :new
       end
@@ -37,7 +55,7 @@ module Shoppe
     # PATCH/PUT /subscription_plans/1
     def update
       if @subscription_plan.update(subscription_plan_params)
-        redirect_to @subscription_plan, notice: 'Subscription plan was successfully updated.'
+        redirect_to @subscription_plan, notice: t('shoppe.subscription_plans.api_responses.plan_updated')
       else
         render :edit
       end
@@ -46,7 +64,7 @@ module Shoppe
     # DELETE /subscription_plans/1
     def destroy
       @subscription_plan.destroy
-      redirect_to subscription_plans_url, notice: 'Subscription plan was successfully destroyed.'
+      redirect_to subscription_plans_url, notice: t('shoppe.subscription_plans.api_responses.plan_destroyed')
     end
 
     private
@@ -57,7 +75,7 @@ module Shoppe
 
       # Only allow a trusted parameter "white list" through.
       def subscription_plan_params
-        params.require(:subscription_plan).permit(:amount, :interval, :interval_count, :name, :currency, :trial_period)
+        params.require(:subscription_plan).permit(:amount, :interval, :interval_count, :name, :currency, :trial_period_days, :api_plan_id, :product_id)
       end
   end
 end
