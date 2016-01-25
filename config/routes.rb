@@ -1,4 +1,5 @@
 Shoppe::Engine.routes.draw do
-  resources :subscriptions
-  resources :subscription_plans
+  resources :subscription_plans do
+    resources :subscribers
+  end
 end
