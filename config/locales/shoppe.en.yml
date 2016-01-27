@@ -35,9 +35,10 @@ en:
         plan_created: Subscription plan was successfully created.
         plan_updated: Subscription plan was successfully updated.
         plan_destroyed: Subscription plan was successfully destroyed.
-    subscriptions:
-      subscriptions: Subscriptions
-      new: New Subscription
+    subscribers:
+      subscribers: Subscribers
+      new: New Subscriber
+      back_to_subscription_plan: Back to Subscription Plan
     intervals:
       day: Day
       month: Month

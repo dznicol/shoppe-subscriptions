@@ -1,6 +1,4 @@
-require_dependency "shoppe/application_controller"
-
-module Shoppe::Subscriptions
+module Shoppe
   class SubscribersController < ApplicationController
     before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
 
