@@ -38,15 +38,23 @@ module Shoppe
     end
 
     def update_plan
-      stripe_plan = retrieve_api_plan
+      stripe_plan = retrieve_api_plan(api_plan_id)
       stripe_plan.name = name
       stripe_plan.save
     end
 
+    def self.get_subscription_plans
+      ::Stripe::Plan.all
+    end
+
+    def self.native_amount(amount)
+      (amount / 100).to_i
+    end
+
     private
 
-    def retrieve_api_plan
-      ::Stripe::Plan.retrieve(api_plan_id)
+    def retrieve_api_plan(plan_id)
+      ::Stripe::Plan.retrieve(plan_id)
     end
 
     def stripe_amount(amount)
