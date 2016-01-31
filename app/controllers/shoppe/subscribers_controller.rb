@@ -1,5 +1,5 @@
 module Shoppe
-  class SubscribersController < ApplicationController
+  class SubscribersController < Shoppe::ApplicationController
     before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
 
     # GET /subscribers

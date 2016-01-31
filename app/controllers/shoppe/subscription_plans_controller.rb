@@ -1,5 +1,5 @@
 module Shoppe
-  class SubscriptionPlansController < ApplicationController
+  class SubscriptionPlansController < Shoppe::ApplicationController
     before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
 
     before_filter { @active_nav = :subscription_plans }
