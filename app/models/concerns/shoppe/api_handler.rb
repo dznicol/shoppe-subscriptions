@@ -18,14 +18,18 @@ module Shoppe
     end
 
     def create_plan
-      ::Stripe::Plan.create(
-          amount: stripe_amount(amount),
-          interval: interval,
-          interval_count: interval_count,
-          name: name,
-          currency: currency,
-          id: api_plan_id,
-          trial_period_days: trial_period_days)
+      begin
+        ::Stripe::Plan.create(
+            amount: stripe_amount(amount),
+            interval: interval,
+            interval_count: interval_count,
+            name: name,
+            currency: currency,
+            id: api_plan_id,
+            trial_period_days: trial_period_days)
+      rescue ::Stripe::InvalidRequestError
+        Rails.logger.info 'Stripe plan already exists!'
+      end
     end
 
     def delete_plan

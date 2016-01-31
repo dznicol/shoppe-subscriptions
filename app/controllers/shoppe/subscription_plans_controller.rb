@@ -17,7 +17,7 @@ module Shoppe
     # GET /subscription_plans/new
     def new
       @subscription_plan = Shoppe::SubscriptionPlan.new
-      @subscribable_products = Shoppe::Product.active.with_attributes('Subscribable', 'true')
+      @subscribable_products = Shoppe::Product.active.with_attributes('subscription', 'true')
       begin
         @charging_currencies = Shoppe::ApiHandler.get_currencies
       rescue ::Stripe::InvalidRequestError
@@ -28,7 +28,7 @@ module Shoppe
 
     # GET /subscription_plans/1/edit
     def edit
-      @subscribable_products = Shoppe::Product.active.with_attributes('Subscribable', 'true')
+      @subscribable_products = Shoppe::Product.active.with_attributes('subscription', 'true')
       begin
         @charging_currencies = Shoppe::ApiHandler.get_currencies
       rescue ::Stripe::InvalidRequestError
