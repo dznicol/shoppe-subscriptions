@@ -9,7 +9,7 @@
       %dl.half
         %dt= f.label :api_plan_id,  t('shoppe.subscription_plans.api_plan_id')
         %dd
-          = f.text_field :api_plan_id, :class => 'text'
+          = f.text_field :api_plan_id, {:class => 'text', readonly: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
   = field_set_tag t('shoppe.subscription_plans.price') do
@@ -19,16 +19,16 @@
         %dd
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
-            = f.text_field :amount, :class => 'text'
+            = f.text_field :amount, readonly: @subscription_plan.persisted?, :class => 'text'
       %dl.third
         %dt= f.label :currency, t('shoppe.subscription_plans.currency')
         %dd
-          = f.select :currency, @charging_currencies, {}, {class: 'chosen'}
+          = f.select :currency, @charging_currencies, {disabled: @subscription_plan.persisted?}, {class: 'chosen', disabled: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.currency_help')
       %dl.third
         %dt= f.label :trial_period_days, t('shoppe.subscription_plans.trial_period_days')
         %dd
-          = f.text_field :trial_period_days, :class => 'text', placeholder: t('shoppe.subscription_plans.days').downcase
+          = f.text_field :trial_period_days, {class: 'text', placeholder: t('shoppe.subscription_plans.days').downcase, readonly: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.trial_period_help')
 
   = field_set_tag t('shoppe.subscription_plans.interval') do
@@ -36,12 +36,12 @@
       %dl.half
         %dt= f.label :interval, t('shoppe.subscription_plans.interval')
         %dd
-          = f.select :interval, Shoppe::SubscriptionPlan::INTERVALS.collect {|i| [t("shoppe.intervals.#{i}"), i]}, {}, {class: 'chosen'}
+          = f.select :interval, Shoppe::SubscriptionPlan::INTERVALS.collect {|i| [t("shoppe.intervals.#{i}"), i]}, {}, {class: 'chosen', disabled: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.interval_help')
       %dl.half
         %dt= f.label :interval_count, t('shoppe.subscription_plans.interval_count')
         %dd
-          = f.text_field :interval_count, :class => 'text'
+          = f.text_field :interval_count, {:class => 'text', readonly: @subscription_plan.persisted?}
           %p.help=  t('shoppe.subscription_plans.interval_count_help')
 
   = field_set_tag t('shoppe.subscription_plans.product') do
@@ -49,7 +49,7 @@
       %dl
         %dt= f.label :product, t('shoppe.subscription_plans.product')
         %dd
-          = f.collection_select :product_id, @subscribable_products, :id, :full_name, {:include_blank => true}, {:class => 'chosen-with-deselect', :data => {:placeholder => t('shoppe.subscription_plans.select_product')}}
+          = f.collection_select :product_id, @subscribable_products, :id, :full_name, {include_blank: true}, {class: 'chosen-with-deselect', data: {placeholder: t('shoppe.subscription_plans.select_product')}}
 
   %p.submit
     - unless @subscription_plan.new_record?
