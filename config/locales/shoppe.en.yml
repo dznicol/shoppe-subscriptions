@@ -40,8 +40,17 @@ en:
         sync_complete: Sync Complete
     subscribers:
       subscribers: Subscribers
+      subscriber: Subscriber
       new: New Subscriber
       back_to_subscription_plan: Back to Subscription Plan
+      no_subscribers: No subscribers to display.
+      customer_name: Customer Name
+      start_date: Start Date
+      balance: Balance
+      back: Back to Subscribers
+      cancel: Cancel Subscription
+      delete_confirmation: Are you sure you wish to remove this subscriber?
+      save: Save Subscriber
     intervals:
       day: Day
       month: Month

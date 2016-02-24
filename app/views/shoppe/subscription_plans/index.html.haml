@@ -15,7 +15,7 @@
         %th= t('shoppe.subscription_plans.interval_count')
         %th= t('shoppe.subscription_plans.name')
         %th= t('shoppe.subscription_plans.currency')
-        %th= t('shoppe.subscription_plans.id')
+        %th= t('shoppe.subscription_plans.api_plan_id')
         %th= t('shoppe.subscription_plans.trial_period_days')
     %tbody
       - if @subscription_plans.empty?
@@ -24,7 +24,7 @@
       - else
         - for subscription_plan in @subscription_plans
           %tr
-            %td= link_to "#{Shoppe.settings.currency_unit.html_safe}#{subscription_plan.amount}", [:edit, subscription_plan]
+            %td= link_to "#{number_to_currency subscription_plan.amount}", [:edit, subscription_plan]
             %td= subscription_plan.interval
             %td= subscription_plan.interval_count
             %td= link_to subscription_plan.name, [:edit, subscription_plan]

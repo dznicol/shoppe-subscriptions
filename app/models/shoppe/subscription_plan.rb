@@ -10,5 +10,7 @@ module Shoppe
     validates :interval, presence: true
 
     belongs_to :product, class_name: 'Shoppe::Product'
+
+    has_many :subscribers, class_name: 'Shoppe::Subscriber'
   end
 end

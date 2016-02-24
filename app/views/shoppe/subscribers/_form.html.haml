@@ -1,0 +1,15 @@
+= form_for [@subscription_plan, @subscriber] do |f|
+  = f.error_messages
+
+  %p.submit
+    - unless @subscriber.new_record?
+      %span.right
+        = link_to t('shoppe.subscribers.cancel'),
+                  @subscription_plan,
+                  class: 'button purple',
+                  method: :delete,
+                  data: {confirm: t('shoppe.subscribers.delete_confirmation')}
+    = f.submit t('shoppe.subscribers.save'),
+               class: 'button green',
+               data: {disable_with: (@subscriber.new_record? ? t('shoppe.customers.creating_customer') : t('shoppe.customers.updating_customer'))}
+    = link_to t('shoppe.customers.cancel'), [:edit, @subscription_plan], :class => 'button'

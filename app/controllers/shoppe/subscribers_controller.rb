@@ -1,10 +1,11 @@
 module Shoppe
   class SubscribersController < Shoppe::ApplicationController
     before_action :set_subscriber, only: [:show, :edit, :update, :destroy]
+    before_action :set_subscription_plan
 
     # GET /subscribers
     def index
-      @subscribers = Subscriber.all
+      @subscribers = @subscription_plan.subscribers
     end
 
     # GET /subscribers/1
@@ -49,7 +50,11 @@ module Shoppe
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_subscriber
-        @@subscriber = Subscriber.find(params[:id])
+        @subscriber = Subscriber.find(params[:id])
+      end
+
+      def set_subscription_plan
+        @subscription_plan = SubscriptionPlan.find(params[:subscription_plan_id])
       end
 
       # Only allow a trusted parameter "white list" through.

@@ -1,31 +1,25 @@
 - @page_title = t('shoppe.subscription_plans.subscribers')
 
 = content_for :header do
-  %p.buttons= link_to t('shoppe.subscribers.back_to_subscription_plan') , :products, :class => 'button'
+  %p.buttons= link_to t('shoppe.subscribers.back_to_subscription_plan') , [:edit, @subscription_plan], :class => 'button'
   %h2.subscription_plans= t('shoppe.subscribers.subscribers')
 
 .table
   %table.data
     %thead
       %tr
-        %th= t('shoppe.subscription_plans.amount')
-        %th= t('shoppe.subscription_plans.interval')
-        %th= t('shoppe.subscription_plans.interval_count')
-        %th= t('shoppe.subscription_plans.name')
-        %th= t('shoppe.subscription_plans.currency')
-        %th= t('shoppe.subscription_plans.id')
-        %th= t('shoppe.subscription_plans.trial_period_days')
+        %th= t('shoppe.subscribers.customer_name')
+        %th= t('shoppe.subscribers.start_date')
+        %th= t('shoppe.subscribers.balance')
+        %th= t('shoppe.subscription_plans.api_plan_id')
     %tbody
-      - if @subscription_plans.empty?
+      - if @subscribers.empty?
         %tr.empty
-          %td{:colspan => 7}= t('shoppe.subscription_plans.no_subscription_plans')
+          %td{:colspan => 7}= t('shoppe.subscription_plans.no_subscribers')
       - else
-        - for subscription_plan in @subscription_plans
+        - for subscriber in @subscribers
           %tr
-            %td= link_to "#{Shoppe.settings.currency_unit.html_safe}#{subscription_plan.amount}", [:edit, subscription_plan]
-            %td= subscription_plan.interval
-            %td= subscription_plan.interval_count
-            %td= link_to subscription_plan.name, [:edit, subscription_plan]
-            %td= subscription_plan.currency
-            %td= subscription_plan.id
-            %td= subscription_plan.trial_period_days
+            %td= link_to subscriber.customer.full_name, [:edit, @subscription_plan, subscriber]
+            %td= subscriber.created_at
+            %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
+            %td= subscriber.subscription_plan.api_plan_id
