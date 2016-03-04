@@ -1,15 +1,30 @@
 = form_for [@subscription_plan, @subscriber] do |f|
   = f.error_messages
 
+  = field_set_tag  t('shoppe.subscription_plans.summary') do
+    .splitContainer
+      %dl.half
+        %dt= f.label :name,  t('shoppe.subscribers.balance')
+        %dd
+          .moneyInput
+            .currency= Shoppe.settings.currency_unit.html_safe
+            = f.text_field :balance, :class => 'text'
+      %dl.half
+        %dt= f.label :api_plan_id,  t('shoppe.subscription_plans.api_plan_id')
+        %dd
+          = f.fields_for @subscriber.subscription_plan do |ff|
+            = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
+            %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+
   %p.submit
     - unless @subscriber.new_record?
       %span.right
         = link_to t('shoppe.subscribers.cancel'),
-                  @subscription_plan,
+                  [@subscription_plan, @subscriber],
                   class: 'button purple',
                   method: :delete,
                   data: {confirm: t('shoppe.subscribers.delete_confirmation')}
     = f.submit t('shoppe.subscribers.save'),
                class: 'button green',
                data: {disable_with: (@subscriber.new_record? ? t('shoppe.customers.creating_customer') : t('shoppe.customers.updating_customer'))}
-    = link_to t('shoppe.customers.cancel'), [:edit, @subscription_plan], :class => 'button'
+    = link_to t('shoppe.customers.cancel'), [@subscription_plan, :subscribers], :class => 'button'

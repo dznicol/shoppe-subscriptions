@@ -23,10 +23,10 @@ module Shoppe
 
     # POST /subscribers
     def create
-      @@subscriber = Subscriber.new(subscriber_params)
+      @subscriber = Subscriber.new(subscriber_params)
 
-      if @@subscriber.save
-        redirect_to @@subscriber, notice: 'Subscriber was successfully created.'
+      if @subscriber.save
+        redirect_to @subscriber, notice: t('shoppe.subscribers.create_notice')
       else
         render :new
       end
@@ -34,8 +34,8 @@ module Shoppe
 
     # PATCH/PUT /subscribers/1
     def update
-      if @@subscriber.update(subscriber_params)
-        redirect_to @@subscriber, notice: 'Subscriber was successfully updated.'
+      if @subscriber.update(subscriber_params)
+        redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.update_notice')
       else
         render :edit
       end
@@ -43,8 +43,8 @@ module Shoppe
 
     # DELETE /subscribers/1
     def destroy
-      @@subscriber.destroy
-      redirect_to subscribers_url, notice: 'Subscriber was successfully destroyed.'
+      @subscriber.destroy
+      redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.destroy_notice')
     end
 
     private

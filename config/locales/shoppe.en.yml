@@ -30,6 +30,8 @@ en:
       product: Product
       select_product: Select Product
       sync: Sync with Provider
+      summary: Summary
+      price: Price
       api_responses:
         general: Payment provider API failed
         currency_retrieval_failed: Failed to retrieve charging currencies from payment provider
@@ -51,6 +53,10 @@ en:
       cancel: Cancel Subscription
       delete_confirmation: Are you sure you wish to remove this subscriber?
       save: Save Subscriber
+      update_notice: Subscriber was successfully updated.
+      destroy_notice: Subscriber was successfully destroyed.
+      create_notice: Subscriber was successfully created.
+
     intervals:
       day: Day
       month: Month
