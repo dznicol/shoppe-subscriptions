@@ -3,18 +3,23 @@
 
   = field_set_tag  t('shoppe.subscription_plans.summary') do
     .splitContainer
-      %dl.half
+      %dl.third
         %dt= f.label :name,  t('shoppe.subscribers.balance')
         %dd
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
             = f.text_field :balance, :class => 'text'
-      %dl.half
+      %dl.third
         %dt= f.label :api_plan_id,  t('shoppe.subscription_plans.api_plan_id')
         %dd
           = f.fields_for @subscriber.subscription_plan do |ff|
             = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
             %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+      %dl.third
+        %dt= f.label :stripe_token,  t('shoppe.subscription_plans.stripe_token')
+        %dd
+          = f.text_field :stripe_token, {:class => 'text', readonly: @subscriber.stripe_token.present?}
+          %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
   %p.submit
     - unless @subscriber.new_record?

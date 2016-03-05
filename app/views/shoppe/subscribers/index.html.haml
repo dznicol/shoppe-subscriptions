@@ -12,10 +12,11 @@
         %th= t('shoppe.subscribers.start_date')
         %th= t('shoppe.subscribers.balance')
         %th= t('shoppe.subscription_plans.api_plan_id')
+        %th= t('shoppe.subscribers.stripe_token')
     %tbody
       - if @subscribers.empty?
         %tr.empty
-          %td{:colspan => 7}= t('shoppe.subscription_plans.no_subscribers')
+          %td{:colspan => 7}= t('shoppe.subscribers.no_subscribers')
       - else
         - for subscriber in @subscribers
           %tr
@@ -23,3 +24,4 @@
             %td= subscriber.created_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
             %td= subscriber.subscription_plan.api_plan_id
+            %td= subscriber.stripe_token
