@@ -48,7 +48,7 @@ module Shoppe
     end
 
     def self.native_amount(amount)
-      amount.to_f / 100
+      amount / 100.0
     end
 
     private

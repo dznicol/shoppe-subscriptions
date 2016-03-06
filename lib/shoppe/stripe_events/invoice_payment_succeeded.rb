@@ -16,8 +16,8 @@ class InvoicePaymentSucceeded
 
     # Add amount to balance for relevant subscription
     if subscriber.present?
-      total = invoice.total / 100.0
-      subtotal = invoice.subtotal / 100.0
+      total = Shoppe::ApiHandler.native_amount invoice.total
+      subtotal = Shoppe::ApiHandler.native_amount invoice.subtotal
       # Subtotal is "Total of all subscriptions, invoice items, and prorations on the invoice before any discount is applied".
       # By using subtotal means we are taking into account any discount when deciding whether there are sufficient funs
       # to trigger a purchase below.
