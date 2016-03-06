@@ -16,8 +16,20 @@ class InvoicePaymentSucceeded
 
     # Add amount to balance for relevant subscription
     if subscriber.present?
-      amount = invoice.total / 100.0
-      subscriber.update_attribute(:balance, (subscriber.balance + amount))
+      total = invoice.total / 100.0
+      subtotal = invoice.subtotal / 100.0
+      # Subtotal is "Total of all subscriptions, invoice items, and prorations on the invoice before any discount is applied".
+      # By using subtotal means we are taking into account any discount when deciding whether there are sufficient funs
+      # to trigger a purchase below.
+      subscriber.update_attribute(:balance, (subscriber.balance + subtotal))
+
+      discount_code = invoice.discount.present? ? invoice.discount.coupon.id : nil
+
+      # Record the transaction for accounting later
+      subscriber.transactions.create({total: total,
+                                      subtotal: subtotal,
+                                      discount_code: discount_code,
+                                      type: Shoppe::SubscriberTransaction::TYPES[0]})
     end
 
     # Auto order the product if the balance now matches (or exceeds) product cost
