@@ -1,7 +1,7 @@
 = form_for [@subscription_plan, @subscriber] do |f|
   = f.error_messages
 
-  = field_set_tag  t('shoppe.subscription_plans.summary') do
+  = field_set_tag  @subscriber.customer.full_name do
     .splitContainer
       %dl.third
         %dt= f.label :name,  t('shoppe.subscribers.balance')
