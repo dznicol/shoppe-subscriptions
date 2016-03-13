@@ -29,7 +29,7 @@ class InvoicePaymentSucceeded
       subscriber.transactions.create({total: total,
                                       subtotal: subtotal,
                                       discount_code: discount_code,
-                                      type: Shoppe::SubscriberTransaction::TYPES[0]})
+                                      transaction_type: Shoppe::SubscriberTransaction::TYPES[0]})
     end
 
     # Auto order the product if the balance now matches (or exceeds) product cost

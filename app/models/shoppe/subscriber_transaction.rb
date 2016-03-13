@@ -1,4 +1,4 @@
-module Shoppe::Subscriptions
+module Shoppe
   class SubscriberTransaction < ActiveRecord::Base
 
     TYPES = ['invoice']
