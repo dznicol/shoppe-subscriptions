@@ -50,6 +50,7 @@ en:
       no_subscribers: No subscribers to display.
       customer_name: Customer Name
       start_date: Start Date
+      cancelled_date: Cancelled Date
       balance: Balance
       stripe_token: Stripe Token
       back: Back to Subscribers
@@ -57,8 +58,12 @@ en:
       delete_confirmation: Are you sure you wish to remove this subscriber?
       save: Save Subscriber
       update_notice: Subscriber was successfully updated.
-      destroy_notice: Subscriber was successfully destroyed.
+      cancelled_notice: Subscriber was successfully cancelled.
       create_notice: Subscriber was successfully created.
+      current_subscribers: Current Subscribers
+      cancelled_subscribers: Cancelled Subscribers
+      status: Status
+
 
     intervals:
       day: Day

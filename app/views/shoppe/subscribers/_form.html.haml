@@ -21,14 +21,26 @@
           = f.text_field :stripe_token, {:class => 'text', readonly: @subscriber.stripe_token.present?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
+  = field_set_tag t('shoppe.subscribers.status') do
+    .splitContainer
+      %dl.half
+        %dt= f.label :created_at, t('shoppe.subscribers.start_date')
+        %dd
+          = @subscriber.created_at
+      %dl.half
+        %dt= f.label :created_at, t('shoppe.subscribers.cancelled_date')
+        %dd
+          = @subscriber.cancelled_at
+
   %p.submit
     - unless @subscriber.new_record?
-      %span.right
-        = link_to t('shoppe.subscribers.cancel'),
-                  [@subscription_plan, @subscriber],
-                  class: 'button purple',
-                  method: :delete,
-                  data: {confirm: t('shoppe.subscribers.delete_confirmation')}
+      - if @subscriber.cancelled_at.blank?
+        %span.right
+          = link_to t('shoppe.subscribers.cancel'),
+                    [@subscription_plan, @subscriber],
+                    class: 'button purple',
+                    method: :delete,
+                    data: {confirm: t('shoppe.subscribers.delete_confirmation')}
     = f.submit t('shoppe.subscribers.save'),
                class: 'button green',
                data: {disable_with: (@subscriber.new_record? ? t('shoppe.customers.creating_customer') : t('shoppe.customers.updating_customer'))}

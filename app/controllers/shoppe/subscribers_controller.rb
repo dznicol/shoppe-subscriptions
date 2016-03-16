@@ -6,6 +6,7 @@ module Shoppe
     # GET /subscribers
     def index
       @subscribers = @subscription_plan.subscribers
+      @cancelled_subscribers = @subscription_plan.subscribers.unscoped.where.not(cancelled_at: nil)
     end
 
     # GET /subscribers/1
@@ -43,14 +44,14 @@ module Shoppe
 
     # DELETE /subscribers/1
     def destroy
-      @subscriber.destroy
-      redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.destroy_notice')
+      @subscriber.update_attribute(:cancelled_at, DateTime.now)
+      redirect_to [@subscription_plan, :subscribers], notice: t('shoppe.subscribers.cancelled_notice')
     end
 
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_subscriber
-        @subscriber = Subscriber.find(params[:id])
+        @subscriber = Subscriber.unscoped.find(params[:id])
       end
 
       def set_subscription_plan
