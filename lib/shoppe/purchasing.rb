@@ -1,6 +1,13 @@
 module Purchasing
   def purchase(customer, subscriber, invoice)
     product = subscriber.subscription_plan.product
+    if product.has_variants?
+      if product.default_variant.present?
+        product = product.default_variant
+      else
+        product = product.variants.last
+      end
+    end
 
     ActiveRecord::Base.transaction do
       # Allow exception to propogate up so that Stripe queues and retries, as that saves us
