@@ -6,9 +6,11 @@ module Shoppe
     class Engine < ::Rails::Engine
       isolate_namespace Shoppe::Subscriptions
 
-      # config.to_prepare do
-      #   Shoppe::Customer.send :include, Shoppe::Subscriptions::CustomerExtensions
-      # end
+      config.to_prepare do
+        Shoppe::Customer.send :include do
+          has_one :subscriber, class_name: 'Shoppe::Subscriber'
+        end
+      end
 
       # Load default navigation
       config.after_initialize do
