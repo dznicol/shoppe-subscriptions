@@ -12,7 +12,15 @@ module Purchasing
     ActiveRecord::Base.transaction do
       # Allow exception to propogate up so that Stripe queues and retries, as that saves us
       # having to build a queuing and failed order workflow, thanks Stripe.com.
-      order = Shoppe::Order.create(notes: "Created for Stripe invoice #{invoice.id}")
+      if invoice.present?
+        note = "Created for Stripe invoice #{invoice.id}"
+      elsif subscriber.stripe_token.present?
+        note = "Created for Stripe subscriber #{subscriber.stripe_token}"
+      else
+        note = "Created for customer #{customer.id}"
+      end
+
+      order = Shoppe::Order.create(notes: note)
       order.customer = customer
 
       # All billing and delivery details need to be copied to the order. Shoppe requirement.
