@@ -12,7 +12,7 @@ class InvoicePaymentSucceeded
       # We can't look up the subscriber object from customer, we have to record both the
       # customer token and subscription token when creating the subscription, so we can
       # look them back up here.
-      customer = Shoppe::Customer.find_by_stripe_token invoice.customer
+      customer = Shoppe::Customer.find_by stripe_id: invoice.customer
 
       # The subscription is left blank if the line item is an invoiceitem
       # First try to look up the subscription from supplied webhook data
@@ -20,7 +20,7 @@ class InvoicePaymentSucceeded
       
       # Fall back to use the 1-to-1 mapping (in the future we might want multiple subscriptions
       # hence why we won't rely on this solely)
-      subscriber = Shoppe::Subscriber.find_by_stripe_token(subscription_id) || customer.subscriber
+      subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id) || customer.subscriber
 
       # Add amount to balance for relevant subscription
       if subscriber.present?
