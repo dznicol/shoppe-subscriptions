@@ -14,8 +14,8 @@ module Purchasing
       # having to build a queuing and failed order workflow, thanks Stripe.com.
       if invoice.present?
         note = "Created for Stripe invoice #{invoice.id}"
-      elsif subscriber.stripe_token.present?
-        note = "Created for Stripe subscriber #{subscriber.stripe_token}"
+      elsif subscriber.stripe_id.present?
+        note = "Created for Stripe subscriber #{subscriber.stripe_id}"
       else
         note = "Created for customer #{customer.id}"
       end
@@ -49,7 +49,7 @@ module Purchasing
 
       order.payments.create(amount: subscriber.subscription_plan.product.price,
                             method: 'Subscription Reallocation',
-                            reference: subscriber.stripe_token,
+                            reference: subscriber.stripe_id,
                             refundable: false,
                             confirmed: true)
 
