@@ -16,7 +16,7 @@
         %th= t('shoppe.subscribers.cancelled_date')
         %th= t('shoppe.subscribers.balance')
         %th= t('shoppe.subscription_plans.api_plan_id')
-        %th= t('shoppe.subscribers.stripe_token')
+        %th= t('shoppe.subscribers.stripe_id')
       - if @subscribers.empty?
         %tr.empty
           %td{:colspan => 6}= t('shoppe.subscribers.no_subscribers')
@@ -28,7 +28,7 @@
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
             %td= subscriber.subscription_plan.api_plan_id
-            %td= subscriber.stripe_token
+            %td= subscriber.stripe_id
 
 %br
 %br
@@ -45,7 +45,7 @@
         %th= t('shoppe.subscribers.cancelled_date')
         %th= t('shoppe.subscribers.balance')
         %th= t('shoppe.subscription_plans.api_plan_id')
-        %th= t('shoppe.subscribers.stripe_token')
+        %th= t('shoppe.subscribers.stripe_id')
       - if @cancelled_subscribers.empty?
         %tr.empty
           %td{:colspan => 6}= t('shoppe.subscribers.no_subscribers')
@@ -57,4 +57,4 @@
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
             %td= subscriber.subscription_plan.api_plan_id
-            %td= subscriber.stripe_token
+            %td= subscriber.stripe_id

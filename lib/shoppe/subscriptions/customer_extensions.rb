@@ -6,13 +6,13 @@
 #
 #       key_value_store properties
 #
-#       def accept_stripe_token(stripe_customer_token)
-#         self.properties['stripe_customer_token'] = stripe_customer_token
+#       def accept_stripe_token(stripe_customer_id)
+#         self.properties['stripe_customer_id] = stripe_customer_id
 #         self.save
 #       end
 #
-#       def stripe_token
-#         @stripe_token ||= self.properties['stripe_customer_token']
+#       def stripe_id
+#         @stripe_id ||= self.properties['stripe_customer_id']
 #       end
 #     end
 #   end

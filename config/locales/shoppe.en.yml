@@ -19,7 +19,7 @@ en:
       default_currency: gbp
       currency_help: Currencies currently supported by your payment provider
       api_plan_id: API Plan ID
-      stripe_token: Stripe Token
+      stripe_id: Stripe ID
       no_subscription_plans: No subscription plans to display.
       back: Back to subscription plans
       blank_currency: Leave blank for default currency
@@ -28,7 +28,7 @@ en:
       interval_count_help: Number of months between subscription charges
       delete_confirmation: Are you sure you wish to remove this subscription plan?
       stripe_subscription_plan_id: This will be the ID shown on the Stripe dashboard
-      stripe_subscription_token_id: This will be the ID shown for the current customer subscription on Stripe dashboard
+      stripe_subscription_id: This will be the ID shown for the current customer subscription on Stripe dashboard
       product: Product
       select_product: Select Product
       sync: Sync with Provider
@@ -52,7 +52,7 @@ en:
       start_date: Start Date
       cancelled_date: Cancelled Date
       balance: Balance
-      stripe_token: Stripe Token
+      stripe_id: Stripe ID
       back: Back to Subscribers
       cancel: Cancel Subscription
       delete_confirmation: Are you sure you wish to remove this subscriber?

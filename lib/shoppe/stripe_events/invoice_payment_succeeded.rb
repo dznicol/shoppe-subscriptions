@@ -10,7 +10,7 @@ class InvoicePaymentSucceeded
       invoice = event.data.object
 
       # We can't look up the subscriber object from customer, we have to record both the
-      # customer token and subscription token when creating the subscription, so we can
+      # customer ID and subscription ID when creating the subscription, so we can
       # look them back up here.
       customer = Shoppe::Customer.find_by stripe_id: invoice.customer
 

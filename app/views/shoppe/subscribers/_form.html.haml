@@ -16,9 +16,9 @@
             = ff.text_field :api_plan_id, {:class => 'text', readonly: true}
             %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
       %dl.third
-        %dt= f.label :stripe_token,  t('shoppe.subscription_plans.stripe_token')
+        %dt= f.label :stripe_id,  t('shoppe.subscription_plans.stripe_id')
         %dd
-          = f.text_field :stripe_token, {:class => 'text', readonly: @subscriber.stripe_token.present?}
+          = f.text_field :stripe_id, {:class => 'text', readonly: @subscriber.stripe_id.present?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
 
   = field_set_tag t('shoppe.subscribers.status') do
