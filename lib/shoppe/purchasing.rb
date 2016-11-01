@@ -24,8 +24,8 @@ module Purchasing
       order.customer = customer
 
       # All billing and delivery details need to be copied to the order. Shoppe requirement.
-      order.first_name = customer.first_name
-      order.last_name = customer.last_name
+      order.first_name = customer.first_name.presence || '-'
+      order.last_name = customer.last_name.presence || '-'
 
       address = customer.addresses.first
 
