@@ -41,7 +41,13 @@ class InvoicePaymentSucceeded
       end
 
       # Auto order the product if the balance now matches (or exceeds) product cost
-      if subscriber.balance >= subscriber.subscription_plan.product.price
+      product = subscriber.subscription_plan.product
+
+      # We can only auto order if we correctly retrieve the product price, which fails if there are
+      # variants but no default variant (as Shoppe returns the 0 priced parent product!)
+      product = product.variants.first if product.has_variants? && product.default_variant.nil?
+
+      if subscriber.balance >= product.price
         purchase(customer, subscriber, invoice)
       end
     end
