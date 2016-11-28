@@ -27,14 +27,15 @@ module Purchasing
       order.first_name = customer.first_name.presence || '-'
       order.last_name = customer.last_name.presence || '-'
 
-      address = customer.addresses.first
-
+      address = customer.addresses.billing
       order.billing_address1 = address.address1
       order.billing_address2 = address.address2
       order.billing_address3 = address.address3
       order.billing_address4 = address.address4
       order.billing_postcode = address.postcode
       order.billing_country = address.country
+
+      address = customer.addresses.delivery
       order.delivery_name = customer.full_name
       order.delivery_address1 = address.address1
       order.delivery_address2 = address.address2
@@ -42,6 +43,10 @@ module Purchasing
       order.delivery_address4 = address.address4
       order.delivery_postcode = address.postcode
       order.delivery_country = address.country
+
+      # FIXME - Detect separate delivery address
+      order.separate_delivery_address = true
+
       order.email_address = customer.email
       order.phone_number = customer.phone
 
