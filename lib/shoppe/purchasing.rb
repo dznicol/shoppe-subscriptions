@@ -51,6 +51,8 @@ module Purchasing
       order.phone_number = customer.phone
 
       order.order_items.add_item(product, 1)
+      # Need to reload the order as he order_items do not instantly get mapped
+      order.reload
 
       order.payments.create(amount: subscriber.subscription_plan.product.price,
                             method: 'Subscription Reallocation',
