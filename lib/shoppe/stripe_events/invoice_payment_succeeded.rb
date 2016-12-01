@@ -47,7 +47,7 @@ class InvoicePaymentSucceeded
       # variants but no default variant (as Shoppe returns the 0 priced parent product!)
       product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
-      if subscriber.balance >= product.price
+      if subscriber.balance >= product.price(subscriber.currency)
         purchase(customer, subscriber, invoice)
       end
     end
