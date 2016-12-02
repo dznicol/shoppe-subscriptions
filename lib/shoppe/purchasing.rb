@@ -51,7 +51,17 @@ module Purchasing
       order.phone_number = customer.phone
 
       order.order_items.add_item(product, 1)
-      # Need to reload the order as he order_items do not instantly get mapped
+
+      order.delivery_service = order.available_delivery_services.first
+      delivery_service_price = order.delivery_service_prices.first
+      if delivery_service_price.present?
+        order.delivery_price = delivery_service_price.try(:price) || 0
+        order.delivery_tax_rate = delivery_service_price.tax_rate.try(:rate) || 0
+      end
+
+      # Allow errors to propogate back to Stripe so we don't silently forget this order
+      order.save
+      # Need to reload the order as the order_items do not instantly get mapped
       order.reload
 
       order.payments.create(amount: subscriber.subscription_plan.product.price,
