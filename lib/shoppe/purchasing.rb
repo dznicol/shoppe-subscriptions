@@ -27,7 +27,7 @@ module Purchasing
       order.first_name = customer.first_name.presence || '-'
       order.last_name = customer.last_name.presence || '-'
 
-      address = customer.addresses.billing
+      address = customer.addresses.billing.first
       order.billing_address1 = address.address1
       order.billing_address2 = address.address2
       order.billing_address3 = address.address3
@@ -35,7 +35,7 @@ module Purchasing
       order.billing_postcode = address.postcode
       order.billing_country = address.country
 
-      address = customer.addresses.delivery
+      address = customer.addresses.delivery.first
       order.delivery_name = customer.full_name
       order.delivery_address1 = address.address1
       order.delivery_address2 = address.address2
@@ -51,6 +51,18 @@ module Purchasing
       order.phone_number = customer.phone
 
       order.order_items.add_item(product, 1)
+
+      order.delivery_service = order.available_delivery_services.first
+      delivery_service_price = order.delivery_service_prices.first
+      if delivery_service_price.present?
+        order.delivery_price = delivery_service_price.try(:price) || 0
+        order.delivery_tax_rate = delivery_service_price.tax_rate.try(:rate) || 0
+      end
+
+      # Allow errors to propogate back to Stripe so we don't silently forget this order
+      order.save
+      # Need to reload the order as the order_items do not instantly get mapped
+      order.reload
 
       order.payments.create(amount: subscriber.subscription_plan.product.price,
                             method: 'Subscription Reallocation',
