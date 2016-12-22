@@ -13,20 +13,21 @@ module Shoppe
     end
 
     def self.get_currencies
-      account = ::Stripe::Account.retrieve
+      account = ::Stripe::Account.retrieve(Shoppe::Stripe.api_key)
       account.currencies_supported
     end
 
     def create_plan
       begin
-        ::Stripe::Plan.create(
-            amount: stripe_amount(amount),
-            interval: interval,
-            interval_count: interval_count,
-            name: name,
-            currency: currency,
-            id: api_plan_id,
-            trial_period_days: trial_period_days)
+        ::Stripe::Plan.create({
+                                  amount: stripe_amount(amount),
+                                  interval: interval,
+                                  interval_count: interval_count,
+                                  name: name,
+                                  currency: currency,
+                                  id: api_plan_id,
+                                  trial_period_days: trial_period_days
+                              }, Shoppe::Stripe.api_key)
       rescue ::Stripe::InvalidRequestError
         Rails.logger.info 'Stripe plan already exists!'
       end
@@ -44,7 +45,7 @@ module Shoppe
     end
 
     def self.get_subscription_plans
-      ::Stripe::Plan.all
+      ::Stripe::Plan.all({}, Shoppe::Stripe.api_key)
     end
 
     def self.native_amount(amount)
@@ -54,7 +55,7 @@ module Shoppe
     private
 
     def retrieve_api_plan(plan_id)
-      ::Stripe::Plan.retrieve(plan_id)
+      ::Stripe::Plan.retrieve(plan_id, Shoppe::Stripe.api_key)
     end
 
     def stripe_amount(amount)
