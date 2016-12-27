@@ -71,26 +71,41 @@ module Shoppe
 
     # SYNC with plans provider
     def sync
-      begin
-        @external_plans = Shoppe::ApiHandler.get_subscription_plans
-        @external_plans.data.each do |external_plan|
-          shoppe_plan = Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id)
-          shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
-          shoppe_plan.currency = external_plan.currency
-          shoppe_plan.interval = external_plan.interval
-          shoppe_plan.interval_count = external_plan.interval_count
-          shoppe_plan.name = external_plan.name
-          shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
-          shoppe_plan.save
+      # Get all API plans for all known Stripe accounts
+      ENV.keys.each do |key|
+        if key.start_with? 'STRIPE_API_KEY'
+          name = get_stripe_account_id(key)
+          logger.debug "Loading Stripe subscription plans for account: #{name} (#{key})"
+          sync_plans(ENV[key])
         end
-
-      rescue ::Stripe::InvalidRequestError
-        flash[:warning] = t('shoppe.subscription_plans.api_responses.plan_sync_failed')
       end
+
       redirect_to subscription_plans_url, notice: t('shoppe.subscription_plans.api_responses.sync_complete')
     end
 
     private
+      def sync_plans(stripe_api_key)
+        begin
+          @external_plans = Shoppe::ApiHandler.get_subscription_plans(stripe_api_key)
+          @external_plans.data.each do |external_plan|
+            shoppe_plan = Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id, currency: external_plan.currency)
+            shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
+            shoppe_plan.interval = external_plan.interval
+            shoppe_plan.interval_count = external_plan.interval_count
+            shoppe_plan.name = external_plan.name
+            shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
+            shoppe_plan.save
+          end
+        rescue ::Stripe::InvalidRequestError
+          flash[:warning] = t('shoppe.subscription_plans.api_responses.plan_sync_failed')
+        end
+      end
+
+      def get_stripe_account_id(api_key_name)
+        matches = api_key_name.match(/STRIPE_API_KEY(_(\w+))?/)
+        matches[2] || 'default'
+      end
+
       # Use callbacks to share common setup or constraints between actions.
       def set_subscription_plan
         @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id])
