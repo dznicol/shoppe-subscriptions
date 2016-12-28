@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+#stripe_account_form {
+  float: right;
+  margin-bottom: 20px;
+
+  #stripe_account {
+    width: 175px;
+  }
+}

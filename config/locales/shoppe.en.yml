@@ -34,6 +34,7 @@ en:
       sync: Sync with Provider
       summary: Summary
       price: Price
+      stripe_account_chooser_help: Please select Stripe account to communicate with
       api_responses:
         general: Payment provider API failed
         currency_retrieval_failed: Failed to retrieve charging currencies from payment provider

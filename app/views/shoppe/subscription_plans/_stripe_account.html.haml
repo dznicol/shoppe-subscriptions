@@ -1,0 +1,2 @@
+= form_tag({controller: :subscription_plans, action: :stripe_account}, {method: :patch, id: :stripe_account_form}) do
+  = select_tag :stripe_account, options_for_select(@stripe_accounts, @stripe_account), {class: 'chosen', onchange: 'this.form.submit();'}

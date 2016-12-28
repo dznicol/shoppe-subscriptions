@@ -1,6 +1,7 @@
 module Shoppe
   class SubscriptionPlansController < Shoppe::ApplicationController
     before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
+    before_action :set_stripe_account
 
     before_filter { @active_nav = :subscription_plans }
     # before_filter { params[:id] && @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id]) }
@@ -40,7 +41,7 @@ module Shoppe
     # POST /subscription_plans
     def create
       begin
-        @subscription_plan = Shoppe::SubscriptionPlan.new(subscription_plan_params)
+        @subscription_plan = Shoppe::Subscription Plan.new(subscription_plan_params)
       rescue ::Stripe::InvalidRequestError => e
         flash[:warning] = e.message
       end
@@ -83,6 +84,13 @@ module Shoppe
       redirect_to subscription_plans_url, notice: t('shoppe.subscription_plans.api_responses.sync_complete')
     end
 
+    def stripe_account
+      # Switch Stripe account
+      session[:stripe_account] = params[:stripe_account]
+      logger.debug "Shoppe::SubscriptionPlansController user set Stripe account to #{session[:stripe_account]}"
+      redirect_to request.referer
+    end
+
     private
       def sync_plans(stripe_api_key)
         begin
@@ -109,6 +117,13 @@ module Shoppe
       # Use callbacks to share common setup or constraints between actions.
       def set_subscription_plan
         @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id])
+      end
+
+      def set_stripe_account
+        @stripe_accounts = ['STRIPE_API_KEY', 'STRIPE_API_KEY_US']
+        session[:stripe_account] = @stripe_accounts[0] if session[:stripe_account].blank?
+        @stripe_account = session[:stripe_account]
+        logger.debug "Shoppe::SubscriptionPlans Stripe account is #{session[:stripe_account]}"
       end
 
       # Only allow a trusted parameter "white list" through.

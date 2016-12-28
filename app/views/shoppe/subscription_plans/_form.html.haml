@@ -1,3 +1,6 @@
+= stylesheet_link_tag 'shoppe_subscriptions/application'
+= javascript_include_tag 'shoppe_subscriptions/application'
+
 = form_for @subscription_plan do |f|
   = f.error_messages
 
@@ -17,9 +20,7 @@
       %dl.third
         %dt= f.label :amount, t('shoppe.subscription_plans.amount')
         %dd
-          .moneyInput
-            .currency= Shoppe.settings.currency_unit.html_safe
-            = f.text_field :amount, readonly: @subscription_plan.persisted?, :class => 'text'
+          = f.text_field :amount, readonly: @subscription_plan.persisted?, :class => 'text'
       %dl.third
         %dt= f.label :currency, t('shoppe.subscription_plans.currency')
         %dd
