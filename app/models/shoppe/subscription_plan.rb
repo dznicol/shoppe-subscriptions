@@ -12,5 +12,7 @@ module Shoppe
     belongs_to :product, class_name: 'Shoppe::Product'
 
     has_many :subscribers, class_name: 'Shoppe::Subscriber'
+
+    attr_accessor :stripe_api_key
   end
 end
