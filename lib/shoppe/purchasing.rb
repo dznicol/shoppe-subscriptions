@@ -59,18 +59,20 @@ module Purchasing
         order.delivery_tax_rate = delivery_service_price.tax_rate.try(:rate) || 0
       end
 
+      order.currency = subscriber.currency
+
       # Allow errors to propogate back to Stripe so we don't silently forget this order
       order.save
       # Need to reload the order as the order_items do not instantly get mapped
       order.reload
 
-      order.payments.create(amount: subscriber.subscription_plan.product.price,
+      order.payments.create(amount: subscriber.subscription_plan.product.price(subscriber.currency),
                             method: 'Subscription Reallocation',
                             reference: subscriber.stripe_id,
                             refundable: false,
                             confirmed: true)
 
-      subscriber.update balance: subscriber.balance - subscriber.subscription_plan.product.price
+      subscriber.update balance: subscriber.balance - subscriber.subscription_plan.product.price(subscriber.currency)
 
       order.proceed_to_confirm
       order.confirm!
