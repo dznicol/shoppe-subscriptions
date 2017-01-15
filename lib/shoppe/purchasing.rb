@@ -27,7 +27,9 @@ module Purchasing
       order.first_name = customer.first_name.presence || '-'
       order.last_name = customer.last_name.presence || '-'
 
-      address = customer.addresses.billing.first
+      # Try to use the billing address if there is one, otherwise use the first address registered
+      address = customer.addresses.billing.first || customer.addresses.ordered.first
+
       order.billing_address1 = address.address1
       order.billing_address2 = address.address2
       order.billing_address3 = address.address3
@@ -35,17 +37,23 @@ module Purchasing
       order.billing_postcode = address.postcode
       order.billing_country = address.country
 
+      # Try to use the delivery address, if there is none and there is more than 1 address use the last address
       address = customer.addresses.delivery.first
-      order.delivery_name = customer.full_name
-      order.delivery_address1 = address.address1
-      order.delivery_address2 = address.address2
-      order.delivery_address3 = address.address3
-      order.delivery_address4 = address.address4
-      order.delivery_postcode = address.postcode
-      order.delivery_country = address.country
+      if address.nil?
+        address = customer.addresses.last if customer.addresses.count > 1
+      end
 
-      # FIXME - Detect separate delivery address
-      order.separate_delivery_address = true
+      if address.present?
+        order.delivery_name = customer.full_name
+        order.delivery_address1 = address.address1
+        order.delivery_address2 = address.address2
+        order.delivery_address3 = address.address3
+        order.delivery_address4 = address.address4
+        order.delivery_postcode = address.postcode
+        order.delivery_country = address.country
+
+        order.separate_delivery_address = true
+      end
 
       order.email_address = customer.email
       order.phone_number = customer.phone
