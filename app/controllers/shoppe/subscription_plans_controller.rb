@@ -96,14 +96,14 @@ module Shoppe
         begin
           @external_plans = Shoppe::ApiHandler.get_subscription_plans(stripe_api_key)
           @external_plans.data.each do |external_plan|
-            Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id, currency: external_plan.currency) do |shoppe_plan|
-              shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
-              shoppe_plan.interval = external_plan.interval
-              shoppe_plan.interval_count = external_plan.interval_count
-              shoppe_plan.name = external_plan.name
-              shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
-              shoppe_plan.stripe_api_key = stripe_api_key
-            end
+            shoppe_plan = Shoppe::SubscriptionPlan.find_or_create_by(api_plan_id: external_plan.id, currency: external_plan.currency)
+            shoppe_plan.amount = Shoppe::ApiHandler.native_amount(external_plan.amount)
+            shoppe_plan.interval = external_plan.interval
+            shoppe_plan.interval_count = external_plan.interval_count
+            shoppe_plan.name = external_plan.name
+            shoppe_plan.trial_period_days = external_plan.trial_period_days || 0
+            shoppe_plan.stripe_api_key = stripe_api_key
+            shoppe_plan.save
           end
         rescue ::Stripe::InvalidRequestError
           flash[:warning] = t('shoppe.subscription_plans.api_responses.plan_sync_failed')

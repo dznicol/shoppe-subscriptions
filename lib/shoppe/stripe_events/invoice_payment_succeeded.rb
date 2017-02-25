@@ -20,6 +20,11 @@ class InvoicePaymentSucceeded
       
       # Fall back to use the 1-to-1 mapping (in the future we might want multiple subscriptions
       # hence why we won't rely on this solely)
+      # FIXME - where subscriptions have been cancelled and reinstated their subscription stripe_id will have changed.
+      # Falling back on the customer link works, but we need to also update the subscription id for future as the old
+      # stripe_id is no longer valid.
+      # We have updated our Stripe integration to not cancel the subscription, so that helps, but what if a customer
+      # comes back after some time??
       subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id) || customer.subscriber
 
       # Add amount to balance for relevant subscription
