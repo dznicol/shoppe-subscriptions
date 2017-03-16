@@ -20,7 +20,7 @@ module Purchasing
         note = "Created for customer #{customer.id}"
       end
 
-      order = Shoppe::Order.create(notes: note)
+      order = Shoppe::Order.create(notes: note, currency: subscriber.currency)
       order.customer = customer
 
       # All billing and delivery details need to be copied to the order. Shoppe requirement.
@@ -66,8 +66,6 @@ module Purchasing
         order.delivery_price = delivery_service_price.try(:price) || 0
         order.delivery_tax_rate = delivery_service_price.tax_rate.try(:rate) || 0
       end
-
-      order.currency = subscriber.currency
 
       # Allow errors to propogate back to Stripe so we don't silently forget this order
       order.save
