@@ -4,7 +4,7 @@
   = field_set_tag  @subscriber.customer.full_name do
     .splitContainer
       %dl.third
-        %dt= f.label :name,  t('shoppe.subscribers.balance')
+        %dt= f.label :balance,  t('shoppe.subscribers.balance')
         %dd
           .moneyInput
             .currency= Shoppe.settings.currency_unit.html_safe
@@ -20,6 +20,22 @@
         %dd
           = f.text_field :stripe_id, {:class => 'text', readonly: @subscriber.stripe_id.present?}
           %p.help=  t('shoppe.subscription_plans.stripe_subscription_plan_id')
+
+  = field_set_tag  t('shoppe.subscribers.recipient_details') do
+    .splitContainer
+      %dl.third
+        %dt= f.label :recipient_name,  t('shoppe.subscribers.recipient_name')
+        %dd
+          = f.text_field :recipient_name, {:class => 'text'}
+          %p.help=  t('shoppe.subscription_plans.subscription_recipient_name')
+      %dl.third
+        %dt= f.label :recipient_email,  t('shoppe.subscribers.recipient_email')
+        %dd
+          = f.text_field :recipient_email, {:class => 'text'}
+      %dl.third
+        %dt= f.label :recipient_phone,  t('shoppe.subscribers.recipient_phone')
+        %dd
+          = f.text_field :recipient_phone, {:class => 'text'}
 
   = field_set_tag t('shoppe.subscribers.status') do
     .splitContainer

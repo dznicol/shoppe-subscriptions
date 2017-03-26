@@ -8,10 +8,13 @@
   %table.data
     %thead
       %tr
-        %th{:colspan => 6}= t('shoppe.subscribers.current_subscribers')
+        %th{:colspan => 9}= t('shoppe.subscribers.current_subscribers')
     %tbody
       %tr
         %th= t('shoppe.subscribers.customer_name')
+        %th= t('shoppe.subscribers.recipient_name')
+        %th= t('shoppe.subscribers.recipient_email')
+        %th= t('shoppe.subscribers.recipient_phone')
         %th= t('shoppe.subscribers.start_date')
         %th= t('shoppe.subscribers.cancelled_date')
         %th= t('shoppe.subscribers.balance')
@@ -19,11 +22,14 @@
         %th= t('shoppe.subscribers.stripe_id')
       - if @subscribers.empty?
         %tr.empty
-          %td{:colspan => 6}= t('shoppe.subscribers.no_subscribers')
+          %td{:colspan => 9}= t('shoppe.subscribers.no_subscribers')
       - else
         - for subscriber in @subscribers
           %tr
             %td= link_to subscriber.customer.full_name, [:edit, @subscription_plan, subscriber]
+            %td= subscriber.recipient_name
+            %td= subscriber.recipient_email
+            %td= subscriber.recipient_phone
             %td= subscriber.created_at
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
@@ -37,9 +43,12 @@
   %table.data
     %thead
       %tr
-        %th{:colspan => 6}= t('shoppe.subscribers.cancelled_subscribers')
+        %th{:colspan => 9}= t('shoppe.subscribers.cancelled_subscribers')
     %tbody
       %tr
+        %th= t('shoppe.subscribers.recipient_name')
+        %th= t('shoppe.subscribers.recipient_email')
+        %th= t('shoppe.subscribers.recipient_phone')
         %th= t('shoppe.subscribers.customer_name')
         %th= t('shoppe.subscribers.start_date')
         %th= t('shoppe.subscribers.cancelled_date')
@@ -48,11 +57,14 @@
         %th= t('shoppe.subscribers.stripe_id')
       - if @cancelled_subscribers.empty?
         %tr.empty
-          %td{:colspan => 6}= t('shoppe.subscribers.no_subscribers')
+          %td{:colspan => 9}= t('shoppe.subscribers.no_subscribers')
       - else
         - for subscriber in @cancelled_subscribers
           %tr
             %td= link_to subscriber.customer.full_name, [:edit, @subscription_plan, subscriber]
+            %td= subscriber.recipient_name
+            %td= subscriber.recipient_email
+            %td= subscriber.recipient_phone
             %td= subscriber.created_at
             %td= subscriber.cancelled_at
             %td= "#{Shoppe.settings.currency_unit.html_safe}#{subscriber.balance}"
