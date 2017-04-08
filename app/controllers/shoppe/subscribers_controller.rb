@@ -6,7 +6,7 @@ module Shoppe
     # GET /subscribers
     def index
       @subscribers = @subscription_plan.subscribers
-      @cancelled_subscribers = @subscription_plan.subscribers.unscoped.where.not(cancelled_at: nil)
+      @cancelled_subscribers = @subscription_plan.cancelled_subscribers
     end
 
     # GET /subscribers/1
