@@ -19,6 +19,10 @@ And then execute:
 Or install it yourself as:
 
     $ gem install shoppe-subscriptions
+    
+  Install migrations:
+  
+    $ bundle exec rake shoppe_subscriptions:install:migrations
 
 ## Usage
 
