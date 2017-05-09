@@ -2,23 +2,23 @@ module Purchasing
   def purchase(customer, subscriber, invoice)
     product = subscriber.subscription_plan.product
     if product.has_variants?
-      if product.default_variant.present?
-        product = product.default_variant
-      else
-        product = product.variants.last
-      end
+      product = if product.default_variant.present?
+                  product.default_variant
+                else
+                  product.variants.last
+                end
     end
 
     ActiveRecord::Base.transaction do
       # Allow exception to propogate up so that Stripe queues and retries, as that saves us
       # having to build a queuing and failed order workflow, thanks Stripe.com.
-      if invoice.present?
-        note = "Created for Stripe invoice #{invoice.id}"
-      elsif subscriber.stripe_id.present?
-        note = "Created for Stripe subscriber #{subscriber.stripe_id}"
-      else
-        note = "Created for customer #{customer.id}"
-      end
+      note = if invoice.present?
+               "Created for Stripe invoice #{invoice.id}"
+             elsif subscriber.stripe_id.present?
+               "Created for Stripe subscriber #{subscriber.stripe_id}"
+             else
+               "Created for customer #{customer.id}"
+             end
 
       order = Shoppe::Order.create(notes: note, currency: subscriber.currency)
       order.customer = customer
@@ -59,6 +59,12 @@ module Purchasing
       order.phone_number = subscriber.recipient_phone || customer.phone
 
       order.order_items.add_item(product, 1)
+
+      # Add any unclaimed gifts
+      subscriber.gifts.unclaimed.each do |gift|
+        order.order_items.add_item(gift.product, 1)
+        gift.update claimed: true
+      end
 
       order.delivery_service = order.available_delivery_services.first
       delivery_service_price = order.delivery_service_prices.first
