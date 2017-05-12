@@ -10,6 +10,8 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
+gem 'shoppe-stripe', git: 'https://github.com/dznicol/shoppe-stripe.git', branch: 'stripe_2.8.0'
+
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 

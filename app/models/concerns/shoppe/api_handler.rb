@@ -13,9 +13,10 @@ module Shoppe
     end
 
     def self.get_currencies(api_key=nil)
-      # FIXME - The following does not work after Stripe API version '2015-10-16', we need to move to country_spec
+      # As of Stripe API version '2015-10-16' we need to get the account country then the country spec
       account = ::Stripe::Account.retrieve(api_key || @stripe_api_key || Shoppe::Stripe.api_key)
-      account.currencies_supported
+      country_spec = ::Stripe::CountrySpec.retrieve(account.country, api_key || @stripe_api_key || Shoppe::Stripe.api_key)
+      country_spec.supported_payment_currencies
     end
 
     def create_plan(api_key = nil)

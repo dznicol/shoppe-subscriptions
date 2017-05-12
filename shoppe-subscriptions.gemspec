@@ -19,8 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2.5"
   s.add_dependency "shoppe"
-  s.add_dependency "shoppe-stripe"
-  s.add_dependency "stripe"
+  s.add_dependency "stripe", "~> 2.8.0"
   s.add_dependency "stripe_event"
 
   s.add_development_dependency "bundler", "~> 1.10"
