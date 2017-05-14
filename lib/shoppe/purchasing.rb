@@ -44,7 +44,7 @@ module Purchasing
       end
 
       if address.present?
-        order.delivery_name = subscriber.recipient_name || customer.full_name
+        order.delivery_name = subscriber.recipient_name.presence || customer.full_name
         order.delivery_address1 = address.address1
         order.delivery_address2 = address.address2
         order.delivery_address3 = address.address3
@@ -55,8 +55,8 @@ module Purchasing
         order.separate_delivery_address = true
       end
 
-      order.email_address = subscriber.recipient_email || customer.email
-      order.phone_number = subscriber.recipient_phone || customer.phone
+      order.email_address = subscriber.recipient_email.presence || customer.email
+      order.phone_number = subscriber.recipient_phone.presence || customer.phone
 
       order.order_items.add_item(product, 1)
 
