@@ -31,6 +31,10 @@ module Shoppe
       api_key || @stripe_api_key || Shoppe::Stripe.api_key
     end
 
+    def key(api_key)
+      api_key || @stripe_api_key || Shoppe::Stripe.api_key
+    end
+
     private
 
     def retrieve_api_plan(plan_id, api_key = nil)

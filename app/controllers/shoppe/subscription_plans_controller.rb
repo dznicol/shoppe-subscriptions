@@ -1,7 +1,7 @@
 module Shoppe
   class SubscriptionPlansController < Shoppe::ApplicationController
-    before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
     before_action :set_stripe_account
+    before_action :set_subscription_plan, only: [:show, :edit, :update, :destroy]
 
     before_filter { @active_nav = :subscription_plans }
     # before_filter { params[:id] && @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id]) }
@@ -41,7 +41,8 @@ module Shoppe
     # POST /subscription_plans
     def create
       begin
-        @subscription_plan = Shoppe::Subscription Plan.new(subscription_plan_params)
+        extra = {stripe_api_key: ENV[@stripe_account]}
+        @subscription_plan = Shoppe::SubscriptionPlan.new(subscription_plan_params.merge(extra))
       rescue ::Stripe::InvalidRequestError => e
         flash[:warning] = e.message
       end
@@ -119,6 +120,9 @@ module Shoppe
     # Use callbacks to share common setup or constraints between actions.
     def set_subscription_plan
       @subscription_plan = Shoppe::SubscriptionPlan.find(params[:id])
+
+      # Also set the Stripe API Key for API actions on this subscriber
+      @subscription_plan.stripe_api_key = ENV[@stripe_account]
     end
 
     def set_stripe_account

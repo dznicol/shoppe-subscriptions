@@ -12,6 +12,8 @@ module Shoppe
 
     default_scope { where(cancelled_at: nil) }
 
+    attr_accessor :stripe_api_key
+
     private
 
     def create_stripe_entity(_api_key = nil)
@@ -23,8 +25,10 @@ module Shoppe
       subscription.delete
     end
 
-    def update_stripe_entity(_api_key = nil)
-      # Nothing to update?
+    def update_stripe_entity(api_key = nil)
+      if cancelled_at_changed? and cancelled_at.present?
+        delete_stripe_entity(api_key)
+      end
     end
   end
 end

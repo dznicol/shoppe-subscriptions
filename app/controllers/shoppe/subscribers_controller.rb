@@ -49,9 +49,13 @@ module Shoppe
     end
 
     private
+
       # Use callbacks to share common setup or constraints between actions.
       def set_subscriber
         @subscriber = Subscriber.unscoped.find(params[:id])
+
+        # Also set the Stripe API Key for API actions on this subscriber
+        @subscriber.stripe_api_key = ENV[session[:stripe_account]]
       end
 
       def set_subscription_plan
