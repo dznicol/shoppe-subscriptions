@@ -17,15 +17,13 @@ class InvoicePaymentSucceeded
       # The subscription is left blank if the line item is an invoiceitem
       # First try to look up the subscription from supplied webhook data
       subscription_id = invoice.subscription || invoice.lines.data.first.try(:subscription)
-      
-      # Fall back to use the 1-to-1 mapping (in the future we might want multiple subscriptions
-      # hence why we won't rely on this solely)
-      # FIXME - where subscriptions have been cancelled and reinstated their subscription stripe_id will have changed.
-      # Falling back on the customer link works, but we need to also update the subscription id for future as the old
-      # stripe_id is no longer valid.
-      # We have updated our Stripe integration to not cancel the subscription, so that helps, but what if a customer
-      # comes back after some time??
-      subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id) || customer.subscriber
+
+      # We can no longer fall back on the customer subscriber association as this is now a has_many. That means if
+      # a subscription Stripe ID's changes (for example if it is cancelled and reinstated), then we need to make
+      # sure the Stripe ID in our Subscriber object is updated.
+      # We now raise an error if we can't find the susbcriber so Stripe will retry, giving us a chance to get the
+      # Stripe ID right in our DB.
+      subscriber = Shoppe::Subscriber.find_by(stripe_id: subscription_id)
 
       # Add amount to balance for relevant subscription
       if subscriber.present?
@@ -39,21 +37,24 @@ class InvoicePaymentSucceeded
         discount_code = invoice.discount.present? ? invoice.discount.coupon.id : nil
 
         # Record the transaction for accounting later
-        subscriber.transactions.create({total: total,
-                                        subtotal: subtotal,
-                                        discount_code: discount_code,
-                                        transaction_type: Shoppe::SubscriberTransaction::TYPES[0]})
-      end
+        subscriber.transactions.create(total: total,
+                                       subtotal: subtotal,
+                                       discount_code: discount_code,
+                                       transaction_type: Shoppe::SubscriberTransaction::TYPES[0])
 
-      # Auto order the product if the balance now matches (or exceeds) product cost
-      product = subscriber.subscription_plan.product
+        # Auto order the product if the balance now matches (or exceeds) product cost
+        product = subscriber.subscription_plan.product
 
-      # We can only auto order if we correctly retrieve the product price, which fails if there are
-      # variants but no default variant (as Shoppe returns the 0 priced parent product!)
-      product = product.variants.first if product.has_variants? && product.default_variant.nil?
+        # We can only auto order if we correctly retrieve the product price, which fails if there are
+        # variants but no default variant (as Shoppe returns the 0 priced parent product!)
+        product = product.variants.first if product.has_variants? && product.default_variant.nil?
 
-      if subscriber.balance >= product.price(subscriber.currency)
-        purchase(customer, subscriber, invoice)
+        if subscriber.balance >= product.price(subscriber.currency)
+          purchase(customer, subscriber, invoice)
+        end
+      else
+        Rails.logger.warn "Cannot find subscriber with id #{subscription_id}"
+        raise AddressNotAcceptableError.new("Cannot find subscriber with ID #{subscription_id}")
       end
     end
   end

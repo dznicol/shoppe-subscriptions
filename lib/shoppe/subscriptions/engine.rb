@@ -8,7 +8,7 @@ module Shoppe
 
       config.to_prepare do
         Shoppe::Customer.send :include do
-          has_one :subscriber, class_name: 'Shoppe::Subscriber'
+          has_many :subscribers, class_name: 'Shoppe::Subscriber', inverse_of: 'customer'
         end
       end
 

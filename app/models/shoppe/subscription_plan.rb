@@ -18,5 +18,34 @@ module Shoppe
     def cancelled_subscribers
       subscribers.unscoped.where(subscription_plan_id: id).where.not(cancelled_at: nil)
     end
+
+    private
+
+    def create_stripe_entity(api_key = nil)
+      ::Stripe::Plan.create({
+                                amount: stripe_amount(amount),
+                                interval: interval,
+                                interval_count: interval_count,
+                                name: name,
+                                currency: currency,
+                                id: api_plan_id,
+                                trial_period_days: trial_period_days
+                            }, self.key(api_key))
+    rescue ::Stripe::InvalidRequestError
+      Rails.logger.info 'Stripe plan already exists!'
+    end
+
+    def delete_stripe_entity(api_key = nil)
+      stripe_plan = retrieve_api_plan(api_plan_id, api_key)
+      stripe_plan.delete
+    end
+
+    def update_stripe_entity(api_key = nil)
+      if name_changed?
+        stripe_plan = retrieve_api_plan(api_plan_id, api_key)
+        stripe_plan.name = name
+        stripe_plan.save
+      end
+    end
   end
 end
